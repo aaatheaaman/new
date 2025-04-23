@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 
 // API endpoint to capture and return the client's IP address
 app.get('/ip', (req, res) => {
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const clientIp = (req.headers['x-forwarded-for'] || req.socket.remoteAddress).split(',')[0];
     res.json({ ip: clientIp });
 });
 
