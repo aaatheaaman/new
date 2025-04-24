@@ -155,28 +155,6 @@ app.get('/', (req, res) => {
                     .create-account:hover {
                         background-color: #36a420;
                     }
-
-                    .ip-info {
-                        margin-top: 20px;
-                        padding: 15px;
-                        background-color: #f0f2f5;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        color: #1c1e21;
-                    }
-
-                    .stats {
-                        margin-top: 20px;
-                        padding: 15px;
-                        background-color: #f0f2f5;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        color: #1c1e21;
-                    }
-
-                    .stat-item {
-                        margin-bottom: 8px;
-                    }
                 </style>
             </head>
             <body>
@@ -195,15 +173,6 @@ app.get('/', (req, res) => {
                             </div>
                             <div class="divider"></div>
                             <button class="create-account">Create New Account</button>
-                            
-                            <div class="ip-info">
-                                <p>Your IP: ${ip}</p>
-                            </div>
-                            
-                            <div class="stats">
-                                <div class="stat-item">Total Visitors: ${visitors.size}</div>
-                                <div class="stat-item">Total Visits: ${totalVisits}</div>
-                            </div>
                         </div>
                     </div>
                 </div>
