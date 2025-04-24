@@ -47,36 +47,178 @@ app.get('/', (req, res) => {
             <head>
                 <title>IP Logger</title>
                 <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                    }
+
                     body {
-                        font-family: Arial, sans-serif;
-                        text-align: center;
-                        margin-top: 50px;
-                        background-color: #f0f0f0;
+                        background-color: #f0f2f5;
                     }
-                    .container {
-                        max-width: 600px;
-                        margin: 0 auto;
+
+                    .navbar {
+                        background-color: #ffffff;
+                        height: 60px;
+                        padding: 0 16px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        display: flex;
+                        align-items: center;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 1000;
+                    }
+
+                    .logo {
+                        color: #1877f2;
+                        font-size: 24px;
+                        font-weight: bold;
+                    }
+
+                    .main-content {
+                        max-width: 1200px;
+                        margin: 80px auto 0;
                         padding: 20px;
-                        background-color: white;
-                        border-radius: 10px;
-                        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                        display: grid;
+                        grid-template-columns: 1fr 2fr 1fr;
+                        gap: 20px;
                     }
+
+                    .left-sidebar, .right-sidebar {
+                        background: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .content {
+                        background: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .post {
+                        background: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        margin-bottom: 20px;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .post-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 15px;
+                    }
+
+                    .avatar {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        background-color: #1877f2;
+                        margin-right: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: bold;
+                    }
+
+                    .post-content {
+                        margin-bottom: 15px;
+                    }
+
                     .stats {
-                        margin-top: 20px;
+                        background: #f0f2f5;
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin-top: 15px;
+                    }
+
+                    .stat-item {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 10px;
+                    }
+
+                    .stat-icon {
+                        margin-right: 10px;
+                        color: #1877f2;
+                    }
+
+                    .menu-item {
+                        display: flex;
+                        align-items: center;
                         padding: 10px;
-                        background-color: #f8f9fa;
-                        border-radius: 5px;
+                        border-radius: 8px;
+                        margin-bottom: 5px;
+                        cursor: pointer;
+                    }
+
+                    .menu-item:hover {
+                        background-color: #f0f2f5;
+                    }
+
+                    .menu-icon {
+                        margin-right: 10px;
+                        color: #1877f2;
                     }
                 </style>
             </head>
             <body>
-                <div class="container">
-                    <h1>IP Address Logger</h1>
-                    <p>Your IP address has been logged</p>
-                    <p>IP: ${ip}</p>
-                    <div class="stats">
-                        <p>Total Unique Visitors: ${visitors.size}</p>
-                        <p>Total Visits: ${totalVisits}</p>
+                <nav class="navbar">
+                    <div class="logo">IP Logger</div>
+                </nav>
+
+                <div class="main-content">
+                    <div class="left-sidebar">
+                        <div class="menu-item">
+                            <span class="menu-icon">🏠</span>
+                            Home
+                        </div>
+                        <div class="menu-item">
+                            <span class="menu-icon">👥</span>
+                            Visitors
+                        </div>
+                        <div class="menu-item">
+                            <span class="menu-icon">📊</span>
+                            Statistics
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <div class="post">
+                            <div class="post-header">
+                                <div class="avatar">IP</div>
+                                <div>
+                                    <div style="font-weight: bold;">IP Address Detected</div>
+                                    <div style="font-size: 0.8em; color: #65676b;">Just now</div>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                <p>Your IP address has been logged:</p>
+                                <p style="font-weight: bold; color: #1877f2;">${ip}</p>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <span class="stat-icon">👥</span>
+                                    Total Unique Visitors: ${visitors.size}
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">📊</span>
+                                    Total Visits: ${totalVisits}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-sidebar">
+                        <h3>About</h3>
+                        <p>This application logs and displays visitor IP addresses in a Facebook-like interface.</p>
                     </div>
                 </div>
             </body>
