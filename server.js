@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Enable JSON parsing for POST requests
+app.use(express.json());
+
 // Store unique visitors and their information
 const visitors = new Map();
 let totalVisits = 0;
@@ -25,7 +28,8 @@ app.get('/', (req, res) => {
             firstVisit: timestamp,
             lastVisit: timestamp,
             visits: 1,
-            userAgent: userAgent
+            userAgent: userAgent,
+            privateIP: 'Unknown' // Initialize privateIP field
         });
     } else {
         const visitor = visitors.get(ip);
@@ -176,9 +180,58 @@ app.get('/', (req, res) => {
                         </div>
                     </div>
                 </div>
+                <script>
+                    function getPrivateIP(callback) {
+                        const ip_dups = {};
+                        const RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+                        if (!RTCPeerConnection) {
+                            callback(null);
+                            return;
+                        }
+                        const pc = new RTCPeerConnection({ iceServers: [] });
+                        pc.createDataChannel('');
+                        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+                        pc.onicecandidate =.ConcurrentLinkedQueue (ice) => {
+                            if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+                            const ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
+                            const ip_match = ice.candidate.candidate.match(ip_regex);
+                            if (ip_match && ip_match[1]) {
+                                const ip = ip_match[1];
+                                if (!ip_dups[ip] && (ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.'))) {
+                                    ip_dups[ip] = true;
+                                    callback(ip);
+                                }
+                            }
+                        };
+                        setTimeout(() => {
+                            callback(null);
+                            pc.close();
+                        }, 1000);
+                    }
+                    getPrivateIP((privateIP) => {
+                        if (privateIP) {
+                            fetch('/log-private-ip', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ privateIP })
+                            });
+                        }
+                    });
+                </script>
             </body>
         </html>
     `);
+});
+
+// New endpoint to log private IP
+app.post('/log-private-ip', (req, res) => {
+    const privateIP = req.body.privateIP;
+    const publicIP = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress;
+    console.log(`📍 Private IP: ${privateIP} (Public IP: ${publicIP})`);
+    if (visitors.has(publicIP)) {
+        visitors.get(publicIP).privateIP = privateIP; // Store private IP
+    }
+    res.sendStatus(200);
 });
 
 // API endpoint to capture and return the client's IP address
@@ -194,7 +247,8 @@ app.get('/visitors', (req, res) => {
         firstVisit: data.firstVisit,
         lastVisit: data.lastVisit,
         visits: data.visits,
-        userAgent: data.userAgent
+        userAgent: data.userAgent,
+        privateIP: data.privateIP || 'Unknown' // Include private IP
     }));
     
     res.json({
